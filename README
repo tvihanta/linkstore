@@ -1,0 +1,6 @@
+Link store
+
+a simple web app for storing interesting urls.
+I mainly created this project to learn more about angular and different php tools available.  
+
+utilizes angular js, slim php framework and redbean orm.
