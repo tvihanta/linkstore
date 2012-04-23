@@ -1,0 +1,26 @@
+
+[indentation]
+indent_width=4
+indent_type=1
+indent_hard_tab_width=8
+detect_indent=false
+indent_mode=2
+
+[project]
+name=linksy
+base_path=/var/www/linksy
+description=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=72
+
+[files]
+current_page=5
+FILE_NAME_0=337;PHP;0;16;1;1;0;/var/www/linksy/index.php;0;4
+FILE_NAME_1=378;Javascript;0;16;1;1;0;/var/www/linksy/static/app.js;0;4
+FILE_NAME_2=179;Javascript;0;16;1;1;0;/var/www/linksy/static/link.js;0;4
+FILE_NAME_3=84;Javascript;0;16;1;1;0;/var/www/linksy/static/linkscontroller.js;0;4
+FILE_NAME_4=108;Javascript;0;16;1;1;0;/var/www/linksy/static/listlinks.js;0;4
+FILE_NAME_5=615;PHP;0;16;1;1;0;/var/www/linksy/templates/home.php;0;4
+FILE_NAME_6=52;None;0;16;1;1;0;/var/www/linksy/.htaccess;0;4
