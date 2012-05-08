@@ -1,0 +1,31 @@
+body
+{
+
+
+}
+
+
+input{
+
+
+}
+
+
+
+input.ng-invalid
+{
+border: 2px solid red;
+}
+
+span.inline-help
+{
+    position: absolute;
+    left: 
+}
+
+
+input.ng-pristine
+{
+border: auto;
+}
+
