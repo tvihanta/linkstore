@@ -19,7 +19,7 @@ function getUrl($url)
     }
 }
 
-function saveLink($title, $url, $tags)
+function saveLink($id, $title, $url, $tags)
 {
     if ($url != "" || $url != null){
        
@@ -27,12 +27,26 @@ function saveLink($title, $url, $tags)
         $hasHttp = strrpos($url, "http://");        
         if ($hasHttp===false)
             $url = "http://".$url;
-        echo $url;
         
-        $exists = R::find("link", "url=?", array($url));
-        echo $exists;
+        if ($id != null)
+        {
+            $exists = array();
+        }
+        else
+            $exists = R::find("link", "url=?", array($url));
+        
+        
         if(count($exists) == 0){
-            $link = R::dispense('link');
+            if ($id != null)
+            {
+                $link = R::load('link', $id);
+                echo $link;
+            }
+            else
+            {
+                $link = R::dispense('link'); 
+            }
+            
             $link->url = $url;
             
             $id = R::store($link);
