@@ -2,9 +2,16 @@
 
 angular.module('Linksy', ['ngResource']);
 
+function TagController($scope, $resource){
+    $scope.Tag = $resource('index.php/tags/:id/');
+    $scope.tags = $scope.Tag.query();
+
+}
+
 function LinkController($scope, $resource){
+
+    $scope.loader = function() { return $("#linksy-loader") };
     $scope.Link = $resource('index.php/links/:id/');
-    console.log($scope);
     $scope.links = $scope.Link.query();    
     $scope.clearForm = function(){
         $scope.link = null;
@@ -14,12 +21,14 @@ function LinkController($scope, $resource){
     };
     
     $scope.save = function(){
-        console.log($scope.Link.$save);
-        $scope.Link.save($scope.link);
-       
+        $scope.toggleLoader();
+        $scope.Link.save($scope.link, function(link){
+            $scope.toggleLoader();
+            console.log("www:" +link.title);
+            $scope.links = $scope.Link.query();
+       // $scope.links.push({id: link.id, title: link.title, url: link.url, tags:"", image:""});
         $scope.clearForm();
-        $scope.links = $scope.Link.query();
-         $scope.links = $scope.Link.query();
+        });
     }
     
     $scope.destroy = function(){
@@ -28,10 +37,17 @@ function LinkController($scope, $resource){
         $scope.links = $scope.Link.query();
     }
 
+    $scope.toggleLoader = function (){
+        if($scope.loader().css('display') == 'none')
+        {
+            $scope.loader().show('slow');
+        }
+        else {
+            $scope.loader().hide('slow');
+        }
+    }
 
     $scope.edit = function(){
-        console.log(this.link)
-        console.log($scope.linkForm);
         $scope.Link.get({id: this.link.id}, function (link) {
             self.original = link;
             $scope.link = link;

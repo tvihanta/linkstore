@@ -20,7 +20,7 @@ border: 2px solid red;
 span.inline-help
 {
     position: absolute;
-    left: 
+    left: 5px;
 }
 
 
@@ -28,4 +28,39 @@ input.ng-pristine
 {
 border: auto;
 }
+
+
+#tag-list {
+    width: 20%;
+    min-width: 200px;
+    float: left;
+}
+
+#links-container
+{
+    width: 80%;
+    min-width: 300px;
+    float: left;
+}
+
+.linksy-link-table
+{
+    width: 100%;
+}
+
+.linksy-link-table td{
+    
+}
+
+.linksy-link-img{
+    height: 25px;
+}
+
+#linksy-loader
+{
+    display: none;
+    position: absolute;
+    right: 10px;
+}
+
 

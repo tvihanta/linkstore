@@ -1,29 +1,83 @@
 <?php
-
+require_once('simple_html_dom.php');
 function getUrl($url)
 {
-    $curl_handle=curl_init();
-    curl_setopt($curl_handle,CURLOPT_URL,'http://example.com');
-    curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
-    curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-    $buffer = curl_exec($curl_handle);
-    curl_close($curl_handle);
-
-    if (empty($buffer))
-    {
-        print "Sorry, example.com are a bunch of poopy-heads.<p>";
+    try {
+    $html = file_get_html($url);
+    } catch (Exception $e) {
+        return null;
     }
+    $post_html = str_get_html($html);
+
+    if(isset($post_html)) {
+        return $post_html;
+        }
     else
-    {
-        print $buffer;
+        return null;
+}
+
+function getTagArray($tags) {
+    $res =  array();
+    foreach($tags as $tag){
+        $res[] = $tag->tag;
+    }
+    return $res;
+}
+
+function getFirstImage($dom)
+{
+    $first_img = $dom->find('img', 0);
+    if($first_img !== null) {
+        return $first_img->src;
+    }
+    return "";
+}
+
+function getTitle($dom)
+{
+    if($dom != null ) {
+        $title = $dom->find('title', 0);
+        if($title !== null) {
+            return $title->plaintext;
+        }
+    }
+    else {
+        return "no title found.";
     }
 }
 
-function saveLink($id, $title, $url, $tags)
+function parseAndSaveTags($tagString, $link)
 {
-    if ($url != "" || $url != null){
+    try {
+    $tags  = explode(",", $tagString);
+    } catch (Exception $e)
+    {
+    return null;
+    }
+    
+    foreach ($tags as $tag){
+        $tag = cleanString($tag);
+        //try to find existing
+        $tagexists = R::find("tag", "tag=?", array($tag)); 
+        echo $tagexists;
+        if(count( $tagexists ) != 0){
+            R::associate( $link, $tagexists[0] );
+        }
+        else {
+            $tagObj = R::dispense('tag');
+            $tagObj->tag = $tag;
+            R::store($tagObj);
+            R::associate( $link, $tagObj );
+        }        
+    }
+        
+}
+
+function saveLink($pLink, $id)
+{
+    if ($pLink->url != "" || $pLink->url != null){
        
-        $url = cleanString($url);
+        $url = cleanString($pLink->url);
         $hasHttp = strrpos($url, "http://");        
         if ($hasHttp===false)
             $url = "http://".$url;
@@ -40,37 +94,40 @@ function saveLink($id, $title, $url, $tags)
             if ($id != null)
             {
                 $link = R::load('link', $id);
-                echo $link;
             }
             else
             {
                 $link = R::dispense('link'); 
+                $dom = getUrl($url);
             }
-            
             $link->url = $url;
-            
             $id = R::store($link);
-            echo json_encode(array('id'=>$id));
-            if ($title != "")
+            if ($link->title != "")
             {
-                $link->title=cleanString($title);
+                $link->title=cleanString($pLink->title);
             }else
             {
                 //fetch title from url
-                
+                $link->title=cleanString(getTitle($dom));
             }
-            if (count($tags) > 0)
-            {
+            if(isset($dom) && $dom != null )
+                $link->image=getFirstImage($dom);
             
+            R::store($link);            
+            
+            echo "tags:".$pLink->tags;
+            if ($pLink->tags !="")
+            {
+                parseAndSaveTags($pLink->tags, $link);
             }
-            R::store($link);
+            
+
             return $link->id;        
         }
         else
         {
             return "url already exists";
         }
-        
     }
     else
     {
