@@ -16,17 +16,6 @@ $app->get('/', function() use ($app){
 	return $app->render('home.php');
 });
 
-$app->get('/tags', function() use ($app){
-    $tags = R::find('tag');
-    foreach($tags as $tag)
-	{
-	    $nbrOfLinks = count( R::related( $tag, 'link' ) );
-	    
-	    $res[] = array("id"=>$tag->id,"tag"=>$tag->tag, "nbr"=>$nbrOfLinks);
-	}
-    echo json_encode($res);
-});
-
 $app->delete( '/links/:id', function ($id) use ($app)
 {
     echo $id;
@@ -40,8 +29,6 @@ $app->delete( '/links/:id', function ($id) use ($app)
     R::trash($link);
     echo 1;
     return 1;
-        
-
 });
 
 $app->post('/links', function() use ($app)
@@ -51,9 +38,9 @@ $app->post('/links', function() use ($app)
 	    $response['Content-Type'] = 'text/plain';
         $link = R::dispense('link');
         $newLink = json_decode($request->getBody());
-        echo $newLink->tags;
-        /*if (!isset($newLink->tags))
-             $newLink->tags = "";*/
+        //echo $newLink->tags;
+        if (!isset($newLink->tags))
+             $newLink->tags = "";
         
         if (isset($newLink->id))
         {
@@ -63,17 +50,18 @@ $app->post('/links', function() use ($app)
             $res = saveLink($newLink,$id = null);
         }
         
-        if (is_string($res))
+        /*if (is_string($res))
         {
+            echo $res;
             $res = array("error"=>$res);
-            echo "error".$res;
+            //echo "error".$res;
         }
         else
-        {
-            echo getLinkJSON($res);
+        {*/
+            return  getLinkJSON($res);
             //$return= array("id"=>$res->id,"title"=>$res->title, "url"=>$res->url, "tags"=>array(), "img"=>$res->image);
     	    //echo json_encode($return);
-        }
+        //}
         
     });
 
@@ -81,7 +69,19 @@ $app->post('/links', function() use ($app)
 $app->get('/links', function() use ($app){
 	$response = $app->response();
 	$response['Content-Type'] = 'text/plain';
-	$all = R::find('link');
+    
+    if(isset($_GET['filter']) && $_GET['filter'] != ""){
+        $tag = R::findOne('tag', "tag=?" , array($_GET['filter']));    
+        if ($tag != NULL){
+            $all = R::related( $tag, 'link' );
+        }
+        else {
+         return 0;     
+        }
+    }
+    else{
+        $all = R::find('link');    
+    }
 	$res = array();
 	foreach($all as $link)
 	{
@@ -104,6 +104,41 @@ $app->get('/links/:id', function($id) use ($app){
 	//echo json_encode(array(array("title"=>"google", "url"=>"www.google.com", "img"=>"", "tags"=>array("seppo"))));
 });
 
+
+$app->get('/tags', function() use ($app){
+    $tags = R::find('tag');
+    foreach($tags as $tag)
+    {
+        $nbrOfLinks = count( R::related( $tag, 'link' ) );
+        
+        $res[] = array("id"=>$tag->id,"tag"=>$tag->tag, "nbr"=>$nbrOfLinks);
+    }
+    echo json_encode($res);
+});
+
+$app->post('/tags', function() use ($app){
+    $request = $app->request();
+    $response = $app->response();
+    $response['Content-Type'] = 'text/plain';
+    $tag = json_decode($request->getBody());
+    echo saveTag($tag);
+});
+
+$app->delete( '/tags/:id', function ($id) use ($app)
+{
+    $tag = R::load('tag', $id);
+    if (!$tag->id)
+    {
+        echo "no tag found.";
+        return 0;    
+    }        
+    
+    R::clearRelations( $tag, 'link' );
+    R::trash($tag);
+    echo 1;
+});
+
+
 function getLinkJSON($id){
     $link = R::load('link', $id);
     if (!$link->id)
@@ -111,10 +146,28 @@ function getLinkJSON($id){
         echo "no link found.";
         return 0;    
     }        
-	
-	$res= array("id"=>$link->id,"title"=>$link->title, "url"=>$link->url, "tags"=>array(), "img"=>$link->image);
+	$tags = getTagArray( R::related( $link, 'tag' ) );
+	$res= array("id"=>$link->id,"title"=>$link->title, "url"=>$link->url, "tags"=>$tags, "img"=>$link->image);
 	return json_encode($res);
 }
+
+function getTagJSON($pLink){
+    if(count($pLink->tags) > 0){
+        $res = array();
+        foreach ($pLink->tags as $tag) {
+               
+           $tagArr = array("tag"=>$tag->tag);
+           
+           $res[] = $tag;
+        }
+        return json_encode($res);
+    }
+    
+}
+
+
+
+
 
 $app->run();
 

@@ -49,28 +49,40 @@ function getTitle($dom)
 function parseAndSaveTags($tagString, $link)
 {
     try {
-    $tags  = explode(",", $tagString);
+        $tags  = explode(",", $tagString);
+        echo $tags[0];
     } catch (Exception $e)
     {
-    return null;
+        return null;
     }
     
     foreach ($tags as $tag){
         $tag = cleanString($tag);
         //try to find existing
-        $tagexists = R::find("tag", "tag=?", array($tag)); 
-        echo $tagexists;
+        $tagexists = R::findOne("tag", "tag=?", array($tag)); 
         if(count( $tagexists ) != 0){
-            R::associate( $link, $tagexists[0] );
+            
+            R::associate( $link, $tagexists);
         }
         else {
             $tagObj = R::dispense('tag');
+            echo $tag;
             $tagObj->tag = $tag;
             R::store($tagObj);
             R::associate( $link, $tagObj );
         }        
     }
         
+}
+
+function saveTag($pTag){
+    $tagObj = R::findOne("tag", "id=?", array($pTag->id)); 
+    echo $tagObj;
+    if(count( $tagObj ) == 0){
+        $tagObj = R::dispense('tag');
+    }
+    $tagObj->tag = $pTag->tag;
+    R::store($tagObj);
 }
 
 function saveLink($pLink, $id)
@@ -112,12 +124,13 @@ function saveLink($pLink, $id)
             }
             if(isset($dom) && $dom != null )
                 $link->image=getFirstImage($dom);
-            
+            R::clearRelations($link, "tag");
             R::store($link);            
             
-            echo "tags:".$pLink->tags;
+            //echo "tags:".$pLink->tags;
             if ($pLink->tags !="")
             {
+                
                 parseAndSaveTags($pLink->tags, $link);
             }
             
