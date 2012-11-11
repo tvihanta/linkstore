@@ -1,0 +1,70 @@
+body
+{
+
+
+}
+
+
+input{
+
+
+}
+
+#tag-list li{
+    list-style-type: none;
+}
+
+#url-input{
+    width: 90%;
+    font-size: 1.8em;
+}
+
+.tag-input-cont input{
+    widtH: 80%;
+}
+
+input.ng-invalid
+{
+border: 2px solid red;
+}
+
+span.inline-help
+{
+    position: absolute;
+    left: 5px;
+}
+
+
+input.ng-pristine
+{
+border: auto;
+}
+
+
+#tag-list {
+}
+
+#links-container
+{
+}
+
+.linksy-link-table
+{
+    width: 90%;
+}
+
+.linksy-link-table td{
+    
+}
+
+.linksy-link-img{
+}
+
+#linksy-loader
+{
+    display: none;
+    position: absolute;
+    right: 10px;
+}
+
+

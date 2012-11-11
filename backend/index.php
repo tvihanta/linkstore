@@ -2,19 +2,41 @@
 require('lib/Slim/Slim.php');
 require('lib/rb.php');
 require('lib/linksy.php');
-
-
 R::setup('mysql:host=localhost;dbname=linksy', 'root','root');
 
 $app = new Slim(array(
+                'debug' => true,
 				'log.enable'=> true,
 				'log.path' => 'logs',
 				'log.level' => 4				
 		));
 
 $app->get('/', function() use ($app){
-	return $app->render('home.php');
+	$response = $app->response();
+	$response['Content-Type'] = 'text/plain';
+    
+    if(isset($_GET['filter']) && $_GET['filter'] != ""){
+        $tag = R::findOne('tag', "tag=?" , array($_GET['filter']));    
+        if ($tag != NULL){
+            $all = R::related( $tag, 'link' );
+        }
+        else {
+         return 0;     
+        }
+    }
+    else{
+        $all = R::find('link');    
+    }
+	$res = array();
+	foreach($all as $link)
+	{
+	    $tags = getTagArray( R::related( $link, 'tag' ) );
+	    
+	    $res[] = array("id"=>$link->id,"title"=>$link->title, "url"=>$link->url, "tags"=>$tags, "img"=>$link->image);
+	}
+	echo json_encode($res);
 });
+
 
 $app->delete( '/links/:id', function ($id) use ($app)
 {
@@ -117,6 +139,14 @@ $app->get('/tags', function() use ($app){
 });
 
 $app->post('/tags', function() use ($app){
+    $request = $app->request();
+    $response = $app->response();
+    $response['Content-Type'] = 'text/plain';
+    $tag = json_decode($request->getBody());
+    echo saveTag($tag);
+});
+
+$app->put('/tags/:id', function() use ($app){
     $request = $app->request();
     $response = $app->response();
     $response['Content-Type'] = 'text/plain';

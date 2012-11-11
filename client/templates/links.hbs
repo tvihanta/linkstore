@@ -1,0 +1,16 @@
+    <h2>links</h2>
+    {{#each items}}
+    <div class="row-fluid">
+   
+            <div class="span2 linksy-link-img" style="background: url({{this.img}}) no-repeat center center; background-size: contain;"></div>    
+        <div class="span4" ><a href="{{this.url}}">{{this.title}}</a></div>
+        <div class="span4">
+            {{#each this.tags}}
+            ( <span >{{this}} </span>)
+            {{/each}}
+        </div>
+        <div class="span1"> <a class="remove-link"><i class="icon-remove icon-large"></i></a></div>
+        <div class="span1"><a class="edit-link"><i class="icon-edit icon-large"></i></a></div>
+       
+    </div>
+    {{/each}}
