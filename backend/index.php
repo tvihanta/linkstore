@@ -80,7 +80,7 @@ $app->post('/links', function() use ($app)
         }
         else
         {*/
-            return  getLinkJSON($res);
+            echo getLinkJSON($res);
             //$return= array("id"=>$res->id,"title"=>$res->title, "url"=>$res->url, "tags"=>array(), "img"=>$res->image);
     	    //echo json_encode($return);
         //}

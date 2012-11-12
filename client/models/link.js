@@ -2,20 +2,20 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['chaplin', 'models/base/collection'], function(Chaplin, Collection) {
+define(['chaplin', 'models/base/model'], function(Chaplin, Model) {
   'use strict';
 
-  var Links;
-  return Links = (function(_super) {
+  var Link;
+  return Link = (function(_super) {
 
-    __extends(Links, _super);
+    __extends(Link, _super);
 
-    function Links() {
-      return Links.__super__.constructor.apply(this, arguments);
+    function Link() {
+      return Link.__super__.constructor.apply(this, arguments);
     }
-    Links.prototype.url = "/linksy/backend/index.php/links";    
+    Link.prototype.url = "/linksy/backend/index.php/links";    
 
-    return Links;
+    return Link;
 
-  })(Collection);
+  })(Model);
 });

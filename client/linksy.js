@@ -5,7 +5,8 @@ var __hasProp = {}.hasOwnProperty,
 define(['chaplin', 
         'views/layout', 
         'routes', 
-        'controllers/tag_controller'], function(Chaplin, Layout, routes, TagController) {
+        'controllers/tag_controller',
+        'controllers/link_form_controller'], function(Chaplin, Layout, routes, TagController, FormController) {
   'use strict';
 
   var LinksyApp;
@@ -46,8 +47,9 @@ define(['chaplin',
 
     LinksyApp.prototype.initControllers = function() {
     
-        //new FormController();
-        return new TagController();
+        app.layout.form = new FormController();
+        app.layout.tags = new TagController();
+        return;
     };
 
     LinksyApp.prototype.initMediator = function() {

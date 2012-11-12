@@ -18,11 +18,6 @@ define(['chaplin','views/base/view', 'text!templates/tags.hbs'], function(Chapli
     TagView.prototype.initialize = function(){
         console.log("tagsview.initialize");
         TagView.__super__.initialize.apply(this, arguments);
-        Chaplin.mediator.subscribe('refreshView',
-                                             function(){
-                                                 this.$el.remove(); 
-                                                 this.render();
-                                                 }, this);
     };
     TagView.prototype.afterRender = function(){
         console.log("tagsview.afterRender");

@@ -14,6 +14,20 @@ define(['chaplin'], function(Chaplin) {
     
       return Layout.__super__.constructor.apply(this, arguments);
     }
+    
+    Layout.prototype.initialize = function(){
+        Layout.__super__.initialize.apply(this, arguments);
+        console.log("layout.initialize");
+        
+        Chaplin.mediator.subscribe("refreshAllViews", this.refreshAll, this);
+    };
+    
+    Layout.prototype.refreshAll = function(){
+        console.log("layout.refrfesh");
+        console.log(this);
+        this.tags.view.refresh();
+        app.dispatcher.currentController.view.refresh(); 
+    };
 
     return Layout;
 

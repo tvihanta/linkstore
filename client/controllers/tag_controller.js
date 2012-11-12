@@ -20,11 +20,14 @@ define(['chaplin', 'models/tag', 'views/tag_view'], function(Chaplin, TagCollect
       console.log("TagController.init");  
       TagController.__super__.initialize.apply(this, arguments);
       this.collection = new TagCollection();
-      
       var that = this;
-      return that.view = new TagView({
+      this.collection.fetch({success:function(){
+         return that.view = new TagView({
                 collection: that.collection
              });
+      }});
+     
+     
     };
 
     return TagController;

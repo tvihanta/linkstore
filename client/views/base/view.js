@@ -13,6 +13,11 @@ define(['handlebars', 'chaplin', 'lib/view_helper'], function(Handlebars, Chapli
     function View() {
       return View.__super__.constructor.apply(this, arguments);
     }
+    
+    View.prototype.initialize = function(){
+        Chaplin.mediator.subscribe("refreshView", this.refresh, this);
+        View.__super__.initialize.apply(this, arguments);
+    };
 
     View.prototype.getTemplateFunction = function() {
       var template, templateFunc;
@@ -26,7 +31,7 @@ define(['handlebars', 'chaplin', 'lib/view_helper'], function(Handlebars, Chapli
       return templateFunc;
     };
     
-    View.prototype.render = function() {
+   /* View.prototype.render = function() {
       console.log("base.view.render")
       var that = this;
       try{
@@ -48,6 +53,23 @@ define(['handlebars', 'chaplin', 'lib/view_helper'], function(Handlebars, Chapli
         return that;
       }
       
+    };*/
+    
+    View.prototype.refresh = function(){
+         var that = this;
+         this.collection.fetch({
+             success: function(){
+               that.$el.remove(); 
+               that.render();
+            },
+            error: function(e){
+                console.log(e);
+                that.$el.remove(); 
+                that.render();
+            }
+        });
+         
+         
     };
 
     return View;
