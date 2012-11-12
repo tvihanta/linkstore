@@ -17,26 +17,41 @@ define(['chaplin','views/base/view', 'text!templates/tags.hbs'], function(Chapli
     TagView.prototype.template = template;
     TagView.prototype.initialize = function(){
         console.log("tagsview.initialize");
-        Chaplin.mediator.subscribe('refreshView', function(){this.$el.remove(); this.render();}, this);
         TagView.__super__.initialize.apply(this, arguments);
+        Chaplin.mediator.subscribe('refreshView',
+                                             function(){
+                                                 this.$el.remove(); 
+                                                 this.render();
+                                                 }, this);
+    };
+    TagView.prototype.afterRender = function(){
+        console.log("tagsview.afterRender");
+        TagView.__super__.afterRender.apply(this, arguments);
         this.delegate("click", ".edit-tag", this.showEdit);
         this.delegate("change", ".tag-input", this.tagChange);
+        this.delegate("click", ".tag-remove", this.tagRemove);
     };
-
    // template = null;
     TagView.prototype.showEdit = function(e){
         var elem = $(e.currentTarget).parent();
-        console.log(elem);
         $(".tag-text", elem).toggle();
         $(".tag-input-cont",elem).toggle();
     };
     TagView.prototype.tagChange = function(e){
         var elem = $(e.currentTarget);
-        console.log(elem);
         var id = elem.data("id");
         var modl = this.collection.get(id);
         modl.set('tag', elem.val());
         modl.save();
+        Chaplin.mediator.publish("refreshView");
+    };
+    TagView.prototype.tagRemove = function(e){
+        var elem = $(e.currentTarget);
+        var id = elem.data("id");
+        var modl = this.collection.get(id);
+       
+        modl.destroy();
+        this.collection.remove(modl);
         Chaplin.mediator.publish("refreshView");
     };
     TagView.prototype.className = 'tags';

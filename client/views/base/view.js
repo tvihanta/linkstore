@@ -25,6 +25,30 @@ define(['handlebars', 'chaplin', 'lib/view_helper'], function(Handlebars, Chapli
       }
       return templateFunc;
     };
+    
+    View.prototype.render = function() {
+      console.log("base.view.render")
+      var that = this;
+      try{
+        this.collection.fetch({success: function(){
+            console.log("success");
+            View.__super__.render.apply(that, arguments);
+            console.log(that.template);
+            return that;
+        },
+        error: function(e){
+            console.log(e);
+            View.__super__.render.apply(that, arguments);
+            return that;
+        }
+        });
+      }catch(e){
+        console.log(e);
+        View.__super__.render.apply(that, arguments);
+        return that;
+      }
+      
+    };
 
     return View;
 

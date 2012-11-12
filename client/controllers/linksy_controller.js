@@ -21,7 +21,7 @@ define(['chaplin', 'models/link', 'views/linksy_view'], function(Chaplin, LinkCo
     };
 
     LinksyController.prototype.show = function(params) {
-      console.log("hrer");
+      console.log("controllers.linksycontroller.init");
       this.collection = new LinkCollection();
       console.log(this.collection);
       var that = this;

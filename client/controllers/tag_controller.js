@@ -22,13 +22,9 @@ define(['chaplin', 'models/tag', 'views/tag_view'], function(Chaplin, TagCollect
       this.collection = new TagCollection();
       
       var that = this;
-      this.collection.fetch({success:function(){
-            return that.view = new TagView({
+      return that.view = new TagView({
                 collection: that.collection
              });
-        }, error:function(e){
-            console.log(e);
-        }});
     };
 
     return TagController;
