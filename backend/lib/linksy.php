@@ -50,7 +50,6 @@ function parseAndSaveTags($tagString, $link)
 {
     try {
         $tags  = explode(",", $tagString);
-        echo $tags[0];
     } catch (Exception $e)
     {
         return null;
@@ -66,7 +65,6 @@ function parseAndSaveTags($tagString, $link)
         }
         else {
             $tagObj = R::dispense('tag');
-            echo $tag;
             $tagObj->tag = $tag;
             R::store($tagObj);
             R::associate( $link, $tagObj );
@@ -77,12 +75,12 @@ function parseAndSaveTags($tagString, $link)
 
 function saveTag($pTag){
     $tagObj = R::findOne("tag", "id=?", array($pTag->id)); 
-    echo $tagObj;
     if(count( $tagObj ) == 0){
         $tagObj = R::dispense('tag');
     }
     $tagObj->tag = $pTag->tag;
     R::store($tagObj);
+    return 1;
 }
 
 function saveLink($pLink, $id)

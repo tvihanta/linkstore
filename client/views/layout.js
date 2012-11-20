@@ -25,7 +25,10 @@ define(['chaplin'], function(Chaplin) {
     Layout.prototype.refreshAll = function(){
         console.log("layout.refrfesh");
         console.log(this);
-        this.tags.view.refresh();
+        
+        if( this.tags != null && this.tags.view != null){
+            this.tags.view.refresh();
+        }
         app.dispatcher.currentController.view.refresh(); 
     };
 

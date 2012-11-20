@@ -3,6 +3,7 @@
 define(function() {
   'use strict';
   return function(match) {
-    return match('', 'linksy#show');
+    match('', 'linksy#show');
+    return match('show/:tag', 'linksy#showTag');
   };
 });

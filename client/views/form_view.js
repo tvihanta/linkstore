@@ -18,7 +18,7 @@ define(['chaplin','views/base/view', 'models/link', 'text!templates/form.hbs'], 
     FormView.prototype.initialize = function(){
         console.log("formView.initialize");
         FormView.__super__.initialize.apply(this, arguments);
-        
+        Chaplin.mediator.subscribe("PopulateEditForm", this.populateForm, this);
     };
     FormView.prototype.afterRender = function(){
         console.log("formView.afterRender");
@@ -27,26 +27,37 @@ define(['chaplin','views/base/view', 'models/link', 'text!templates/form.hbs'], 
         this.urlInput = $('input#url-input');
         this.titleInput = $('input#title');
         this.tagsInput = $('input#tags');
+        this.idInput = $('input#idInput');
         this.submit = $('#save');
         
-        this.delegate("keypress", "input", this.validate);
-        this.delegate("blur", "input", this.validate);
+        //this.delegate("keypress", "input", this.validate);
+        //this.delegate("blur", "input", this.validate);
         this.delegate("click", "#save", this.save);
+    };
+    
+    FormView.prototype.populateForm = function(model){
+        console.log("formView.populateForm");
+        this.$el.remove();
+        this.model = model;
+        this.render();
     };
     FormView.prototype.save = function(e){
         console.log("formView.save");
         console.log(this.submit.data('id'))
         if(typeof this.submit.data('id') == "undefined" || this.submit.data('id') === ""){
             this.submit.data('id')
+            var that = this;
             var model = new Link(
                         {
+                            id: this.idInput.val(),
                             url: this.urlInput.val(),         
                             title: this.titleInput.val(),
                             tags: this.tagsInput.val()
                         });
-            model.save(null, {
+            model.save(null, { wait:true,
                 success: function(){
-                     Chaplin.mediator.publish("refreshAllViews");
+                    console.log("success");
+                     that.refresh();
                 },
                 error: function(e){
                      console.log(e);

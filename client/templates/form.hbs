@@ -1,9 +1,10 @@
     <div class="editor"s> 
-        <input id="url-input" type="url" name="linkUrl" placeholder="url"/>
-        <button disabled="disabled" id="save" class="btn">Save</button>
+        <input id="url-input" type="url" name="linkUrl" placeholder="url" value="{{this.url}}"/>
+        <button id="save" class="btn">Save</button>
         <br/>
         <div>
-         <input type="text" id="title" name="linkTitle" placeholder="title"  />
-        <input type="text" name="linkTags"  id="tags" placeholder="tags" />
+         <input type="text" id="title" name="linkTitle" placeholder="title" value="{{this.title}}" />
+        <input type="text" name="linkTags"  id="tags" placeholder="tags" value="{{this.tags}}" />
+         <input type="hidden"  id="idInput" value="{{this.id}}" />
         </div>
     </div>

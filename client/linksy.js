@@ -6,7 +6,8 @@ define(['chaplin',
         'views/layout', 
         'routes', 
         'controllers/tag_controller',
-        'controllers/link_form_controller'], function(Chaplin, Layout, routes, TagController, FormController) {
+        'controllers/filter_controller',
+        'controllers/link_form_controller'], function(Chaplin, Layout, routes, TagController,FilterController, FormController) {
   'use strict';
 
   var LinksyApp;
@@ -23,7 +24,6 @@ define(['chaplin',
     LinksyApp.prototype.initialize = function() {
       LinksyApp.__super__.initialize.apply(this, arguments);
       
-      this.pushState = false;
       this.initMediator();
       this.initDispatcher();
       this.initLayout();
@@ -49,6 +49,7 @@ define(['chaplin',
     
         app.layout.form = new FormController();
         app.layout.tags = new TagController();
+        app.layout.currentFilter = new FilterController();
         return;
     };
 

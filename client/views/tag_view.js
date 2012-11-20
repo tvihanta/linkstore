@@ -37,17 +37,23 @@ define(['chaplin','views/base/view', 'text!templates/tags.hbs'], function(Chapli
         var id = elem.data("id");
         var modl = this.collection.get(id);
         modl.set('tag', elem.val());
-        modl.save();
-        Chaplin.mediator.publish("refreshView");
+        modl.save(null, {success: function(){
+            console.log("tag save");
+            Chaplin.mediator.publish("refreshAllViews");
+        }});
     };
     TagView.prototype.tagRemove = function(e){
         var elem = $(e.currentTarget);
         var id = elem.data("id");
         var modl = this.collection.get(id);
-       
-        modl.destroy();
-        this.collection.remove(modl);
-        Chaplin.mediator.publish("refreshView");
+       var that = this;
+        modl.destroy({success:function(){
+            console.log(that.collection);
+            //that.refresh();
+            Chaplin.mediator.publish("refreshAllViews");
+        }});
+        //this.collection.remove(modl);
+        
     };
     TagView.prototype.className = 'tags';
     TagView.prototype.container = '#tag-container';

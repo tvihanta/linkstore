@@ -55,21 +55,33 @@ define(['handlebars', 'chaplin', 'lib/view_helper'], function(Handlebars, Chapli
       
     };*/
     
-    View.prototype.refresh = function(){
+    View.prototype.refresh = function(refreshCollection){
+    
+         if(typeof refreshCollection === "undefined") refreshCollection = true;
+         console.log("refr"+refreshCollection);
          var that = this;
-         this.collection.fetch({
-             success: function(){
-               that.$el.remove(); 
-               that.render();
-            },
-            error: function(e){
-                console.log(e);
-                that.$el.remove(); 
-                that.render();
-            }
-        });
-         
-         
+         if(typeof this.collection != "undefined" && refreshCollection){
+              this.collection.fetch({
+                 success: function(){
+                   that.$el.remove(); 
+                   that.render();
+                },
+                error: function(e){
+                    console.log(e);
+                    that.$el.remove(); 
+                    that.render();
+                }
+            });
+         }
+         else if (typeof this.model != "undefined"){
+              that.model = new that.model.constructor();
+              that.$el.remove();
+              that.render();
+         }
+         else{
+            that.$el.remove();
+              that.render();
+         }
     };
 
     return View;

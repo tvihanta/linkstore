@@ -22,20 +22,33 @@ define(['chaplin', 'models/link_collection', 'views/linksy_view'], function(Chap
 
     LinksyController.prototype.show = function(params) {
       console.log("controllers.linksycontroller.init");
+      Chaplin.mediator.publish("FilterChange", "All");
       this.collection = new LinkCollection();
-      console.log(this.collection);
       var that = this;
       this.collection.fetch({success:function(){
             return that.view = new LinksyView({
                 collection: that.collection
              });
         }, error:function(){
-      
-      
+        
         }});
-      
+      return this;
     };
-
+    
+    LinksyController.prototype.showTag = function(params) {
+      console.log("controllers.linksycontroller.showtag");  
+      Chaplin.mediator.publish("FilterChange", params.tag);
+      this.collection = new LinkCollection();
+      var that = this;
+      this.collection.fetch({data: {tag:params.tag},success:function(){
+            return that.view = new LinksyView({
+                collection: that.collection
+             });
+        }, error:function(){
+        
+        }});
+      return this;
+    };
     return LinksyController;
 
   })(Chaplin.Controller);

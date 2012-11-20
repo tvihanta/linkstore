@@ -2,7 +2,7 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['chaplin', 'models/tag', 'views/form_view'], function(Chaplin, TagCollection, FormView) {
+define(['chaplin', 'models/tag',  'models/link','views/form_view'], function(Chaplin, TagCollection, LinkModel,FormView) {
   'use strict';
 
   var FormController;
@@ -17,8 +17,9 @@ define(['chaplin', 'models/tag', 'views/form_view'], function(Chaplin, TagCollec
     FormController.prototype.initialize = function(params) {
       console.log("FormController.init");  
       FormController.__super__.initialize.apply(this, arguments);
-      return this.view = new FormView();
+      return this.view = new FormView({model: new LinkModel({url:"http://"})});
     };
+    
 
     return FormController;
 

@@ -14,8 +14,8 @@ $app = new Slim(array(
 $app->get('/', function() use ($app){
 	$response = $app->response();
 	$response['Content-Type'] = 'text/plain';
-    
-    if(isset($_GET['filter']) && $_GET['filter'] != ""){
+    echo print_r($_GET);
+    if(isset($_GET['tag']) && $_GET['tag'] != ""){
         $tag = R::findOne('tag', "tag=?" , array($_GET['filter']));    
         if ($tag != NULL){
             $all = R::related( $tag, 'link' );
@@ -40,9 +40,7 @@ $app->get('/', function() use ($app){
 
 $app->delete( '/links/:id', function ($id) use ($app)
 {
-    echo $id;
     $link = R::load('link', $id);
-    echo $link;    
     if (!$link->id)
     {
         echo "no link found.";
@@ -60,7 +58,6 @@ $app->post('/links', function() use ($app)
 	    $response['Content-Type'] = 'text/plain';
         $link = R::dispense('link');
         $newLink = json_decode($request->getBody());
-        //echo $newLink->tags;
         if (!isset($newLink->tags))
              $newLink->tags = "";
         
@@ -71,29 +68,40 @@ $app->post('/links', function() use ($app)
         else{
             $res = saveLink($newLink,$id = null);
         }
-        
-        /*if (is_string($res))
-        {
-            echo $res;
-            $res = array("error"=>$res);
-            //echo "error".$res;
-        }
-        else
-        {*/
-            echo getLinkJSON($res);
-            //$return= array("id"=>$res->id,"title"=>$res->title, "url"=>$res->url, "tags"=>array(), "img"=>$res->image);
-    	    //echo json_encode($return);
-        //}
+  
+        echo getLinkJSON($res);
         
     });
 
+
+$app->put('/links', function() use ($app)
+    {
+        $request = $app->request();
+        $response = $app->response();
+	    $response['Content-Type'] = 'text/plain';
+        $link = R::dispense('link');
+        $newLink = json_decode($request->getBody());
+        if (!isset($newLink->tags))
+             $newLink->tags = "";
+        
+        if (isset($newLink->id))
+        {
+            $res = saveLink($newLink, $id = $newLink->id);
+        }
+        else{
+            $res = saveLink($newLink,$id = null);
+        }
+  
+        echo getLinkJSON($res);
+        
+    });
 
 $app->get('/links', function() use ($app){
 	$response = $app->response();
 	$response['Content-Type'] = 'text/plain';
     
-    if(isset($_GET['filter']) && $_GET['filter'] != ""){
-        $tag = R::findOne('tag', "tag=?" , array($_GET['filter']));    
+    if(isset($_GET['tag']) && $_GET['tag'] != ""){
+        $tag = R::findOne('tag', "tag=?" , array($_GET['tag']));    
         if ($tag != NULL){
             $all = R::related( $tag, 'link' );
         }

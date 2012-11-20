@@ -2,7 +2,7 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['views/base/view', 'text!templates/links.hbs'], function(View, template) {
+define(['chaplin','views/base/view', 'text!templates/links.hbs'], function(Chaplin,View, template) {
   'use strict';
 
   var LinksView;
@@ -18,17 +18,36 @@ define(['views/base/view', 'text!templates/links.hbs'], function(View, template)
     LinksView.prototype.initialize = function(){
         LinksView.__super__.initialize.apply(this, arguments);
         console.log("linksview.initialize");
-        console.log(this);
+        var that = this;
+    };
+    
+    LinksView.prototype.afterRender = function(){
+        LinksView.__super__.afterRender.apply(this, arguments);
+        this.delegate("click", ".remove-link", this.removeLink);
+        this.delegate("click", ".edit-link", function(e){
+            var model = this.collection.get($(e.currentTarget).data('id'));
+            Chaplin.mediator.publish("PopulateEditForm", model);
+        });
     };
 
+    LinksView.prototype.removeLink = function(e){
+        console.log("removeLink");
+        var link = $(e.currentTarget);
+        var linkId = link.data('id');
+        var modl = this.collection.get(linkId);
+        console.log(modl);
+        var that = this;
+         modl.destroy({success:function(){
+            console.log(that.collection);
+            that.refresh();
+            //Chaplin.mediator.publish("refreshView");
+        }});
+    };
    // template = null;
 
     LinksView.prototype.className = 'links';
-
     LinksView.prototype.container = '#links-container';
-
     LinksView.prototype.autoRender = true;
-
     return LinksView;
 
   })(View);

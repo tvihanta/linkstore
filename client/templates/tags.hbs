@@ -1,8 +1,10 @@
 {{#each items}}
 <div class="row-fluid">
     <div class=" span11 tag-text" style="display:inline;">
-        <a href="#tag/{{this.tag}}">
-            {{this.tag}}</a> <span>( {{this.nbr}} )</span>
+        <a href="#show/{{this.tag}}">
+            {{this.tag}}
+        </a> 
+        <span>( {{this.nbr}} )</span>
     </div>
     <div class="span10 tag-input-cont" style="display: none;">
         <input type="text" class="tag-input" data-id="{{this.id}}" value="{{this.tag}}" />
