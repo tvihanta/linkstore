@@ -43,27 +43,26 @@ define(['chaplin','views/base/view', 'models/link', 'text!templates/form.hbs'], 
     };
     FormView.prototype.save = function(e){
         console.log("formView.save");
-        console.log(this.submit.data('id'))
-        if(typeof this.submit.data('id') == "undefined" || this.submit.data('id') === ""){
-            this.submit.data('id')
-            var that = this;
-            var model = new Link(
-                        {
-                            id: this.idInput.val(),
-                            url: this.urlInput.val(),         
-                            title: this.titleInput.val(),
-                            tags: this.tagsInput.val()
-                        });
-            model.save(null, { wait:true,
-                success: function(){
-                    console.log("success");
-                     that.refresh();
-                },
-                error: function(e){
-                     console.log(e);
-                }
-            });
-        }
+        this.submit.data('id')
+        var that = this;
+        var model = new Link(
+                    {
+                        id: this.submit.data('id'),
+                        url: this.urlInput.val(),         
+                        title: this.titleInput.val(),
+                        tags: this.tagsInput.val()
+                    });
+        console.log(model)
+        model.save(null, { wait:true,
+            success: function(){
+                console.log("success");
+                 that.refresh();
+                 Chaplin.mediator.publish('refreshAll');
+            },
+            error: function(e){
+                 console.log(e);
+            }
+        });
     };
     FormView.prototype.validate = function(e){
         console.log("formView.validate");

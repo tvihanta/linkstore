@@ -8,7 +8,6 @@
   <link href="css/linksy.css" rel="stylesheet" type="text/css">
  </head>
 <body>
-<div id="linksy-loader"><img src="img/loader.gif"/></div>
 <div class="row-fluid">
     <div class="span12">
         <a href="#/"><h1>Linksy!</h1></a>
@@ -33,11 +32,11 @@
           
         </div>
     </div>
-    <script src="vendor/require-2.1.1.js"></script>
-    <script>
+<script src=""></script>
+<script src="vendor/require-2.1.1.js"></script>
+<script>
         // Configure the AMD module loader
         requirejs.config({
-          
           // Specify the paths of vendor libraries
           paths: {
             jquery: 'vendor/jquery-1.8.2',
@@ -46,7 +45,7 @@
             backbone: 'vendor/backbone-0.9.2',
             handlebars: 'vendor/handlebars-1.0.rc.1',
             text: 'vendor/require-text-2.0.3',
-            chaplin: 'vendor/chaplin-1.0.0-pre-59cac06'
+            chaplin: 'vendor/chaplin-1.0.0-pre-59cac06',
           },
           // Underscore and Backbone are not AMD-capable per default,
           // so we need to use the AMD wrapping of RequireJS
@@ -72,10 +71,12 @@
         });
 
         // Bootstrap the application
-        require(['linksy'], function (Linksy) {
+        require(['jquery', 'linksy'], function ($, Linksy) {
+          $('body').append('<script src="vendor/bootstrap/js/bootstrap.min.js">');
           window.app = new Linksy();
           app.initialize();
         });
 </script>
+
 </body>
 </html>

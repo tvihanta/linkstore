@@ -2,7 +2,10 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['chaplin', 'models/link_collection', 'views/linksy_view'], function(Chaplin, LinkCollection, LinksyView) {
+define(['chaplin', 
+        'models/link_collection', 
+        'views/linksy_view', 
+        'views/login_view'], function(Chaplin, LinkCollection, LinksyView, LoginView) {
   'use strict';
 
   var LinksyController;
@@ -18,7 +21,14 @@ define(['chaplin', 'models/link_collection', 'views/linksy_view'], function(Chap
 
     LinksyController.prototype.historyURL = function(params) {
       return '';
+    }; 
+
+    LinksyController.prototype.login = function(params){
+      console.log("controller.linsky.login");
+      return this.view = new LoginView();
+
     };
+
 
     LinksyController.prototype.show = function(params) {
       console.log("controllers.linksycontroller.init");

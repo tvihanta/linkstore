@@ -32,6 +32,20 @@ define(['chaplin'], function(Chaplin) {
         app.dispatcher.currentController.view.refresh(); 
     };
 
+    Layout.prototype.loginStatus = function(status){
+        if(status){
+            app.layout.form = new FormController();
+            app.layout.tags = new TagController();
+            app.layout.currentFilter = new FilterController();
+        }else{  
+            app.layout.form.dispose();
+            app.layout.tags.dispose();
+            
+        }
+
+    }
+
+
     return Layout;
 
   })(Chaplin.Layout);

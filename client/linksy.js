@@ -45,11 +45,7 @@ define(['chaplin',
       });
     };
 
-    LinksyApp.prototype.initControllers = function() {
-    
-        app.layout.form = new FormController();
-        app.layout.tags = new TagController();
-        app.layout.currentFilter = new FilterController();
+    LinksyApp.prototype.initControllers = function() {        
         return;
     };
 

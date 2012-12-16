@@ -31,6 +31,10 @@ define(['handlebars', 'chaplin', 'lib/view_helper'], function(Handlebars, Chapli
       return templateFunc;
     };
     
+    View.prototype.afterRender= function(){
+        View.__super__.afterRender.apply(this, arguments);
+        $("[rel=tooltip]").tooltip();
+    },
    /* View.prototype.render = function() {
       console.log("base.view.render")
       var that = this;
@@ -56,19 +60,26 @@ define(['handlebars', 'chaplin', 'lib/view_helper'], function(Handlebars, Chapli
     };*/
     
     View.prototype.refresh = function(refreshCollection){
-    
+         console.log("refresh");
          if(typeof refreshCollection === "undefined") refreshCollection = true;
          console.log("refr"+refreshCollection);
          var that = this;
+         var container = this.$el.parent();
          if(typeof this.collection != "undefined" && refreshCollection){
               this.collection.fetch({
+                 beforeSend:function(){
+                    container.addClass("loading");
+                    that.$el.remove();
+                    console.log(that);
+                 },
                  success: function(){
-                   that.$el.remove(); 
+                   console.log("fetch success");
+                   container.removeClass("loading");
                    that.render();
                 },
                 error: function(e){
                     console.log(e);
-                    that.$el.remove(); 
+                    container.removeClass("loading");
                     that.render();
                 }
             });

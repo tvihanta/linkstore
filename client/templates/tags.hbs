@@ -1,15 +1,14 @@
 {{#each items}}
 <div class="row-fluid">
     <div class=" span11 tag-text" style="display:inline;">
-        <a href="#show/{{this.tag}}">
+        <a href="#show/{{this.tag}}" rel="tooltip" title="{{this.nbr}}">
             {{this.tag}}
         </a> 
-        <span>( {{this.nbr}} )</span>
     </div>
     <div class="span10 tag-input-cont" style="display: none;">
         <input type="text" class="tag-input" data-id="{{this.id}}" value="{{this.tag}}" />
-        <a class="tag-remove" data-id="{{this.id}}" ><i class="icon-remove"></i></a>
+        <a class="tag-remove" rel="tooltip" title="Remove" data-id="{{this.id}}" ><i class="icon-remove"></i></a>
     </div>
-    <a class="span1 edit-tag"><i class="icon-edit"></i></a>
+    <a class="span1 edit-tag" rel="tooltip" title="edit/close"><i class="icon-edit"></i></a>
 </div>
 {{/each}}
