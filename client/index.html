@@ -39,13 +39,14 @@
         requirejs.config({
           // Specify the paths of vendor libraries
           paths: {
-            jquery: 'vendor/jquery-1.8.2',
+            jquery: 'vendor/jquery-1.10.2.min',
             jqueryui: 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',
             underscore: 'vendor/underscore-1.4.2',
             backbone: 'vendor/backbone-0.9.2',
             handlebars: 'vendor/handlebars-1.0.rc.1',
             text: 'vendor/require-text-2.0.3',
             chaplin: 'vendor/chaplin-1.0.0-pre-59cac06',
+            jqcookie: 'vendor/jquery.cookie',
           },
           // Underscore and Backbone are not AMD-capable per default,
           // so we need to use the AMD wrapping of RequireJS
@@ -63,6 +64,10 @@
             jqueryui:{
                 deps:['jquery'],
                 exports: 'jqueryui'
+            },
+            jqcookie:{
+                deps:['jquery'],
+                exports: 'jqcookie'
             }
           }
           // For easier development, disable browser caching
@@ -71,7 +76,7 @@
         });
 
         // Bootstrap the application
-        require(['jquery', 'linksy'], function ($, Linksy) {
+        require(['jquery', 'linksy', 'jqcookie'], function ($, Linksy, cookie) {
           $('body').append('<script src="vendor/bootstrap/js/bootstrap.min.js">');
           window.app = new Linksy();
           app.initialize();

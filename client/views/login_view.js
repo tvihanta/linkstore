@@ -38,14 +38,16 @@ define(['chaplin',
                                 username:this.usernameInput.val(), 
                                 psw:this.passwordInput.val()
                                 });
-        console.log(model)
-        model.save({
+        model.save(null,{
             success: function(model, request){
-                console.log(model);
-                Chaplin.mediator.publish('loginStatus', true);
+                $.cookie("linksy-token", model.get("token"));
+                window.location.href="#all";  
+
+                //Chaplin.mediator.publish('loginStatus', true);
             },
-            failure: function(req){
-                Chaplin.mediator.publish('loginStatus', false);
+            error: function(req, s, a){
+              console.log("error") 
+                //Chaplin.mediator.publish('loginStatus', false);
             }
 
         });

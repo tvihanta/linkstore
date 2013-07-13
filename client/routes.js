@@ -3,8 +3,9 @@
 define(function() {
   'use strict';
   return function(match) {
-    match('', 'linksy#login');
+    match('login', 'linksy#login');
     match('all', 'linksy#show');
-    return match('show/:tag', 'linksy#showTag');
+    match('show/:tag', 'linksy#showTag');
+    return match('all', 'linksy#show');
   };
 });

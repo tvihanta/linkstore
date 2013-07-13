@@ -2,7 +2,8 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['chaplin', 
+define([
+        'chaplin', 
         'views/layout', 
         'routes', 
         'controllers/tag_controller',
@@ -19,15 +20,25 @@ define(['chaplin',
       return LinksyApp.__super__.constructor.apply(this, arguments);
     }
 
-    LinksyApp.prototype.title = 'Chaplin Example Application';
+    LinksyApp.prototype.title = 'seppo';
 
     LinksyApp.prototype.initialize = function() {
       LinksyApp.__super__.initialize.apply(this, arguments);
       
+      var token = $.cookie("linksy-token");
+      if(!token){
+        window.location.href="#login";
+      }
+
       this.initMediator();
+
+      $.ajaxSetup({
+         headers: { 'linksy-token': token }
+      });
+      Chaplin.mediator.globals.token = token;
+
       this.initDispatcher();
       this.initLayout();
-      
       this.initControllers();
       
       var routerOptions = {
@@ -39,7 +50,6 @@ define(['chaplin',
     };
 
     LinksyApp.prototype.initLayout = function() {
-      console.log("here")
       return this.layout = new Layout({
         title: this.title
       });
@@ -51,6 +61,7 @@ define(['chaplin',
 
     LinksyApp.prototype.initMediator = function() {
       Chaplin.mediator.user = null;
+      Chaplin.mediator.globals = {};
       return Chaplin.mediator.seal();
     };
 
