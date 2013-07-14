@@ -1,16 +1,2 @@
-    <table class="table">
-    {{#each items}}
-    <tr>
-        <td class="linksy-link-img"><img class="img-rounded" style="height: 50px;" src="{{this.img}}"></div>    
-        <td class="" ><a href="{{this.url}}" target="_blank">{{this.title}}</a></div>
-        <td class="">
-            <span>({{#each this.tags}}
-             {{this}}, 
-            {{/each}})</span>
-        </td>
-        <td class=""> <a class="remove-link" data-id="{{this.id}}"><i class="icon-remove icon-large"></i></a></td>
-        <td class=""><a class="edit-link" data-id="{{this.id}}"><i class="icon-edit icon-large"></i></a></td>
-       
-    </tr>
-    {{/each}}
+    <table class="table" id="link-list">
     </table>
