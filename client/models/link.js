@@ -13,7 +13,8 @@ define(['chaplin', 'models/base/model'], function(Chaplin, Model) {
     function Link() {
       return Link.__super__.constructor.apply(this, arguments);
     }
-    Link.prototype.url = "/linksy/backend/index.php/links";    
+    Link.prototype.idAttribute = "id";
+    //Link.prototype.url = baseUri+"backend/index.php/links";
     Link.prototype.defaults = function(){return {url: "http://"};};
 
     return Link;

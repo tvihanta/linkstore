@@ -72,7 +72,9 @@
         // Bootstrap the application
         require(['jquery', 'linksy', 'jqcookie', 'routes'], function ($, Linksy, cookie, routes) {
           $('body').append('<script src="vendor/bootstrap/js/bootstrap.min.js">');
+          window.baseUri = "/";
           window.app = new Linksy({routes:routes});
+
         });
 </script>
 

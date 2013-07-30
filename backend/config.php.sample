@@ -1,0 +1,8 @@
+<?php
+$LinksyConfig = array(
+    'mysql_db' => '',
+    'mysql_user' => '',
+    'mysq_psw' => '',
+    'mysql_addr' => ''
+);
+?>

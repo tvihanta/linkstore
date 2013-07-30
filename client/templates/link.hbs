@@ -1,12 +1,11 @@
-<tr>
-        <td class="linksy-link-img"><img class="img-rounded" style="height: 50px;" src="{{this.img}}"></div>    
-        <td class="" ><a href="{{this.url}}" target="_blank">{{this.title}}</a></div>
-        <td class="">
+        <div class="span1 linksy-link-img"><img class="img-rounded" style="max-width: 50px;" src="{{this.img}}"></div>
+        <div class="span2" ><a href="{{this.url}}" target="_blank">{{this.title}}</a></div>
+        <div class="span4">
             <span>({{#each this.tags}}
              {{this}}, 
             {{/each}})</span>
-        </td>
-        <td class=""> <a class="remove-link" data-id="{{this.id}}"><i class="icon-remove icon-large"></i></a></td>
-        <td class=""><a class="edit-link" data-id="{{this.id}}"><i class="icon-edit icon-large"></i></a></td>
-       
-</tr>
+        </div>
+        <div class="span2 pull-right">
+            <a class="remove-link" data-id="{{this.id}}"><i class="icon-remove icon-large"></i></a>
+            <a class="edit-link" data-id="{{this.id}}"><i class="icon-edit icon-large"></i></a>
+        </div>

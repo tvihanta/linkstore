@@ -13,7 +13,7 @@ define(['chaplin', 'models/base/collection'], function(Chaplin, Collection) {
     function Links() {
       return Links.__super__.constructor.apply(this, arguments);
     }
-    Links.prototype.url = "/linksy/backend/index.php/links";    
+    Links.prototype.url = baseUri+"backend/index.php/links";
 
     return Links;
 

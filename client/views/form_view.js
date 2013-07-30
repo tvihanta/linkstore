@@ -11,14 +11,19 @@ define(['chaplin','views/base/view',
     autoRender:true,
     initialize :function(){
         FormView.__super__.initialize.apply(this, arguments);
-        Chaplin.mediator.subscribe("PopulateEditForm", this.populateForm, this);
         this.delegate("click", "#save", this.save);
+        Chaplin.mediator.subscribe("link:edit", this.populateEditForm, this);
     },
     clearForm:function(){
         this.$('input#url-input').val("");
         this.$('input#title').val("");
         this.$('input#tags').val("");
         this.$('input#idInput').val("");
+        this.$('#save').data('id', null);
+    },
+    populateEditForm:function (mdl) {
+        this.model = mdl;
+        this.render();
     },
     save :function(e){
         console.log("formView.save");
@@ -39,10 +44,11 @@ define(['chaplin','views/base/view',
         }
         var that = this;
         var model = new Link( params );
+        model.url = baseUri+"backend/index.php/links";
         model.save(params, { 
-            success: function(mdl){
+            success: function(mdl, res, opts){
                 that.clearForm();
-                that.collection.add(mdl, {at:0});
+                that.collection.add(new Link(mdl.attributes), {at:0, merge:true});
             },
             error: function(e){
                  console.log(e);

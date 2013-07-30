@@ -5,7 +5,7 @@ define([
 
   var User = Model.extend({
       idAttribute: "token",
-      url : "/linksy/backend/index.php/login",
+      url : baseUri+"backend/index.php/login",
       parse:function (req) {
         return req[0];
       }

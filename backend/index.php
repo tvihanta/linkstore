@@ -1,4 +1,5 @@
 <?php
+require_once('config.php');
 require('lib/Slim/Slim.php');
 \Slim\Slim::registerAutoloader();
 require 'lib/Slim/Middleware.php';
@@ -6,7 +7,9 @@ require_once('lib/utils.php');
 require 'auth.php';
 require('lib/rb.php');
 require('lib/linksy.php');
-R::setup('mysql:host=localhost;dbname=linksy', 'root','root');
+
+$str = 'mysql:host=' . $LinksyConfig["mysql_address"] . ';dbname=' . $LinksyConfig["mysql_db"];;
+R::setup($str, $LinksyConfig['mysql_user'], $LinksyConfig['mysql_psw']);
 
 $app =  new \Slim\Slim(array(
                 'debug' => true,
@@ -107,7 +110,6 @@ $app->post('/links', function() use ($app)
         else{
             $res = saveLink($newLink,$id = null);
         }
-  
         echo getLinkJSON($res);
         
     });
