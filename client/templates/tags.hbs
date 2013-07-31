@@ -1,14 +1,22 @@
+<ul class="nav nav-pills nav-stacked">
+    <li class="all-item">
+        <a href="#all" rel="tooltip" title="">
+            All
+        </a>
+    </li>
 {{#each items}}
-<div class="row-fluid">
-    <div class=" span11 tag-text" style="display:inline;">
-        <a href="#show/{{this.tag}}" rel="tooltip" title="{{this.nbr}}">
+    <li class="{{this.tag}}-item">
+        <a href="#show/{{this.tag}}"  rel="tooltip" title="{{this.nbr}}">
             {{this.tag}}
-        </a> 
-    </div>
-    <div class="span10 tag-input-cont" style="display: none;">
-        <input type="text" class="tag-input" data-id="{{this.id}}" value="{{this.tag}}" />
-        <a class="tag-remove" rel="tooltip" title="Remove" data-id="{{this.id}}" ><i class="icon-remove"></i></a>
-    </div>
-    <a class="span1 edit-tag" rel="tooltip" title="edit/close"><i class="icon-edit"></i></a>
-</div>
+        </a>
+        <!--<div class="span10 tag-input-cont" style="display: none;">
+            <input type="text" class="tag-input" data-id="{{this.id}}" value="{{this.tag}}" />
+            <a class="tag-remove" rel="tooltip" title="Remove" data-id="{{this.id}}" ><i class="icon-remove"></i></a>
+        </div>
+        <a class="span1 edit-tag" rel="tooltip" title="edit/close"><i class="icon-edit"></i></a>-->
+    </li>
 {{/each}}
+</ul>
+
+
+
